@@ -6,11 +6,16 @@ import aes
 import secrets
 
 
-def cipher_text(text):
+
+def cipher_text(text, key = None): # key should be a hex string, 256 bit, or empty
     text_b = text.encode("utf-8")
     print("text is ", text_b)
-    key = aes.utils.bytes2int(secrets.token_bytes(16))
-    key_out = aes.utils.int2bytes(key)
+    if key is None:
+        key = aes.utils.bytes2int(secrets.token_bytes(16))
+        key_out = aes.utils.int2bytes(key)
+    else:
+        key_out = bytes.fromhex(key)
+        key = aes.utils.bytes2int(key_out)
     cipher = aes.aes(key,256)
     bytes_out = b""
     idx = 0
@@ -57,6 +62,6 @@ def send_to_telegram(text, username):
     print(r.text)
 
 # send_to_telegram("Hello World!", "tontyoutoure")
-bytes_enc, key = cipher_text("🙂🙂🙂")
-print("key is ", key)
-print("text is ", decipher_text(bytes_enc, key).decode("utf-8"))
+# bytes_enc, key = cipher_text("🙂🙂🙂")
+# print("key is ", key)
+# print("text is ", decipher_text(bytes_enc, key).decode("utf-8"))
